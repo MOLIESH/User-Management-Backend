@@ -1,0 +1,38 @@
+### Add User
+POST http://127.0.0.1:8000/users
+Content-Type: application/json
+
+{
+  "name": "user3",
+  "email": "user3@gmail.com",
+  "age": 32
+}
+
+
+###Get All Users
+GET http://127.0.0.1:8000/users
+
+
+### Search User
+GET http://127.0.0.1:8000/users?search=user3
+
+
+### Sort Users
+GET http://127.0.0.1:8000/users?sort=age&order=desc
+
+
+### Get User by ID
+GET http://127.0.0.1:8000/users/3
+
+
+### Update User
+PUT http://127.0.0.1:8000/users/2
+Content-Type: application/json
+
+{
+  "age": 30
+}
+
+
+### Delete User
+DELETE http://127.0.0.1:8000/users/3

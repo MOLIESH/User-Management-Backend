@@ -1,0 +1,465 @@
+{
+  "info": {
+    "name": "BuyerForeSight - User Management API",
+    "description": "Complete REST API collection for User Management built with Django + SQLite.\n\nBase URL: http://127.0.0.1:8000\n\nEndpoints:\n- GET    /users              List users (with search & sort)\n- POST   /users              Create a new user\n- GET    /users/:id          Get user by ID\n- PUT    /users/:id          Update user\n- DELETE /users/:id          Delete user",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "List All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users",
+              "host": ["{{base_url}}"],
+              "path": ["users"]
+            },
+            "description": "Retrieve a list of all users. No filters applied."
+          },
+          "response": [
+            {
+              "name": "200 OK - List of Users",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "[{\"id\":1,\"name\":\"Alice\",\"email\":\"alice@example.com\",\"age\":28,\"created_at\":\"2024-01-01T10:00:00Z\",\"updated_at\":\"2024-01-01T10:00:00Z\"},{\"id\":2,\"name\":\"Bob\",\"email\":\"bob@example.com\",\"age\":35,\"created_at\":\"2024-01-02T09:00:00Z\",\"updated_at\":\"2024-01-02T09:00:00Z\"}]"
+            }
+          ]
+        },
+        {
+          "name": "Search Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users?search=alice",
+              "host": ["{{base_url}}"],
+              "path": ["users"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "alice",
+                  "description": "Search by name or email (case-insensitive)"
+                }
+              ]
+            },
+            "description": "Search users by name or email using the `search` query parameter. The filter is case-insensitive and matches partial strings."
+          },
+          "response": [
+            {
+              "name": "200 OK - Filtered Users",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "[{\"id\":1,\"name\":\"Alice\",\"email\":\"alice@example.com\",\"age\":28,\"created_at\":\"2024-01-01T10:00:00Z\",\"updated_at\":\"2024-01-01T10:00:00Z\"}]"
+            }
+          ]
+        },
+        {
+          "name": "Sort Users by Name ASC",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users?sort=name&order=asc",
+              "host": ["{{base_url}}"],
+              "path": ["users"],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "name",
+                  "description": "Field to sort by: name | email | age | created_at"
+                },
+                {
+                  "key": "order",
+                  "value": "asc",
+                  "description": "Sort direction: asc | desc"
+                }
+              ]
+            },
+            "description": "Sort users by name in ascending order."
+          },
+          "response": [
+            {
+              "name": "200 OK - Sorted ASC",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "[{\"id\":1,\"name\":\"Alice\",\"email\":\"alice@example.com\",\"age\":28,\"created_at\":\"2024-01-01T10:00:00Z\",\"updated_at\":\"2024-01-01T10:00:00Z\"},{\"id\":2,\"name\":\"Bob\",\"email\":\"bob@example.com\",\"age\":35,\"created_at\":\"2024-01-02T09:00:00Z\",\"updated_at\":\"2024-01-02T09:00:00Z\"}]"
+            }
+          ]
+        },
+        {
+          "name": "Sort Users by Age DESC",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users?sort=age&order=desc",
+              "host": ["{{base_url}}"],
+              "path": ["users"],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "age",
+                  "description": "Field to sort by: name | email | age | created_at"
+                },
+                {
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort direction: asc | desc"
+                }
+              ]
+            },
+            "description": "Sort users by age in descending order."
+          },
+          "response": [
+            {
+              "name": "200 OK - Sorted DESC",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "[{\"id\":2,\"name\":\"Bob\",\"email\":\"bob@example.com\",\"age\":35,\"created_at\":\"2024-01-02T09:00:00Z\",\"updated_at\":\"2024-01-02T09:00:00Z\"},{\"id\":1,\"name\":\"Alice\",\"email\":\"alice@example.com\",\"age\":28,\"created_at\":\"2024-01-01T10:00:00Z\",\"updated_at\":\"2024-01-01T10:00:00Z\"}]"
+            }
+          ]
+        },
+        {
+          "name": "Search + Sort Combined",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users?search=example&sort=name&order=asc",
+              "host": ["{{base_url}}"],
+              "path": ["users"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "example",
+                  "description": "Search by name or email"
+                },
+                {
+                  "key": "sort",
+                  "value": "name",
+                  "description": "Sort field"
+                },
+                {
+                  "key": "order",
+                  "value": "asc",
+                  "description": "Sort direction"
+                }
+              ]
+            },
+            "description": "Combine search and sort filters in a single request."
+          },
+          "response": [
+            {
+              "name": "200 OK - Combined Filters",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "[{\"id\":1,\"name\":\"Alice\",\"email\":\"alice@example.com\",\"age\":28,\"created_at\":\"2024-01-01T10:00:00Z\",\"updated_at\":\"2024-01-01T10:00:00Z\"},{\"id\":2,\"name\":\"Bob\",\"email\":\"bob@example.com\",\"age\":35,\"created_at\":\"2024-01-02T09:00:00Z\",\"updated_at\":\"2024-01-02T09:00:00Z\"}]"
+            }
+          ]
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Alice\",\n  \"email\": \"alice@example.com\",\n  \"age\": 28\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users",
+              "host": ["{{base_url}}"],
+              "path": ["users"]
+            },
+            "description": "Create a new user. Required fields: `name`, `email`. Optional: `age`."
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "status": "Created",
+              "code": 201,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\"id\":1,\"name\":\"Alice\",\"email\":\"alice@example.com\",\"age\":28,\"created_at\":\"2024-01-01T10:00:00Z\",\"updated_at\":\"2024-01-01T10:00:00Z\"}"
+            },
+            {
+              "name": "400 Bad Request - Validation Error",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\"email\":[\"user with this email already exists.\"]}"
+            }
+          ]
+        },
+        {
+          "name": "Create User (without age)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bob\",\n  \"email\": \"bob@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users",
+              "host": ["{{base_url}}"],
+              "path": ["users"]
+            },
+            "description": "Create a user without the optional `age` field."
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "status": "Created",
+              "code": 201,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\"id\":2,\"name\":\"Bob\",\"email\":\"bob@example.com\",\"age\":null,\"created_at\":\"2024-01-02T09:00:00Z\",\"updated_at\":\"2024-01-02T09:00:00Z\"}"
+            }
+          ]
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["users", "{{user_id}}"]
+            },
+            "description": "Retrieve details of a single user by their ID."
+          },
+          "response": [
+            {
+              "name": "200 OK - User Found",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\"id\":1,\"name\":\"Alice\",\"email\":\"alice@example.com\",\"age\":28,\"created_at\":\"2024-01-01T10:00:00Z\",\"updated_at\":\"2024-01-01T10:00:00Z\"}"
+            },
+            {
+              "name": "404 Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\"error\":\"User not found\"}"
+            }
+          ]
+        },
+        {
+          "name": "Update User (Full)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Alice Updated\",\n  \"email\": \"alice.updated@example.com\",\n  \"age\": 30\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["users", "{{user_id}}"]
+            },
+            "description": "Update all fields of an existing user."
+          },
+          "response": [
+            {
+              "name": "200 OK - Updated",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\"id\":1,\"name\":\"Alice Updated\",\"email\":\"alice.updated@example.com\",\"age\":30,\"created_at\":\"2024-01-01T10:00:00Z\",\"updated_at\":\"2024-01-03T12:00:00Z\"}"
+            },
+            {
+              "name": "404 Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\"error\":\"User not found\"}"
+            }
+          ]
+        },
+        {
+          "name": "Update User (Partial)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"age\": 31\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["users", "{{user_id}}"]
+            },
+            "description": "Partially update a user — only the fields provided will be changed (partial=True is enabled server-side)."
+          },
+          "response": [
+            {
+              "name": "200 OK - Partially Updated",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\"id\":1,\"name\":\"Alice\",\"email\":\"alice@example.com\",\"age\":31,\"created_at\":\"2024-01-01T10:00:00Z\",\"updated_at\":\"2024-01-04T08:30:00Z\"}"
+            }
+          ]
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["users", "{{user_id}}"]
+            },
+            "description": "Delete a user by their ID. Returns a success message if deleted."
+          },
+          "response": [
+            {
+              "name": "200 OK - Deleted",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\"message\":\"User deleted successfully\"}"
+            },
+            {
+              "name": "404 Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\"error\":\"User not found\"}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
