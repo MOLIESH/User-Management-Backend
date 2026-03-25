@@ -4,6 +4,10 @@ from rest_framework import status
 from django.db.models import Q
 from .models import User
 from .serializers import UserSerializer
+from django.http import HttpResponse
+
+def home(request):
+    return HttpResponse("Backend is live")
 
 
 class UserListCreateView(APIView):
